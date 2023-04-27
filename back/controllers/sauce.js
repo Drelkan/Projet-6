@@ -37,3 +37,29 @@ exports.getOneSauce = (req, res, next) => {
     })
     .catch((error) => res.status(400).json({error:error}))
 }
+
+//test modifcation produit
+exports.modifySauce = (req, res, next) => {
+    const sauceBody = req.file ?
+    {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`,
+    } : { ...req.body };
+    
+    Sauce.updateOne({_id:req.params.id}, {...sauceBody, _id:req.params.id})
+    .then(() => {
+        res.status(200).json({message:"Sauce modifiée avec succès"})
+    })
+    .catch((error) => res.status(400).json({error:error}))
+}
+//
+
+//Test Suppression produit
+exports.deleteSauce = (req, res, next) => {
+    Sauce.deleteOne({ _id: req.params.id })
+      .then(() => {
+        res.status(200).json({ message: "Sauce supprimée avec succès" });
+      })
+      .catch((error) => res.status(400).json({ error: error }));
+  };
+//
