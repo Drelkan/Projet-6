@@ -4,16 +4,28 @@ const app = express();
 const userRoutes = require("./routes/user");
 const sauceRoutes = require("./routes/sauce");
 const path = require("path");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimit = require("express-rate-limit");
+const xss = require("xss-clean");
+require('dotenv').config()
+
+const limiter = rateLimit({
+  windowMs: 15,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Ajout d'helmet
 const helmet = require("helmet");
 app.use(helmet());
 
 // Ajout de dotenv
+// "mongodb+srv://dreinan7676:ut5bcIe7WPwlPyWf@cluster0.qln7rqc.mongodb.net/piiquante?retryWrites=true&w=majority",
 
 mongoose
   .connect(
-    "mongodb+srv://dreinan7676:ut5bcIe7WPwlPyWf@cluster0.qln7rqc.mongodb.net/piiquante?retryWrites=true&w=majority",
+    `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@cluster0.qln7rqc.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -37,6 +49,12 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+app.use(mongoSanitize())
+
+app.use(limiter);
+
+app.use(xss());
 
 app.use("/images", express.static(path.join(__dirname, "images")));
 

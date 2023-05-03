@@ -44,6 +44,9 @@ exports.getOneSauce = (req, res, next) => {
 
 //test modifcation produit
 exports.modifySauce = (req, res, next) => {
+  // if (sauce.userId !== req.auth.userId) {
+  //   res.status(401).json({ message: "Suppression non autoriser" });
+  // }
   const sauceBody = req.file
     ? {
         ...JSON.parse(req.body.sauce),
@@ -52,10 +55,20 @@ exports.modifySauce = (req, res, next) => {
         }`,
       }
     : { ...req.body };
-
-  Sauce.updateOne({ _id: req.params.id }, { ...sauceBody, _id: req.params.id })
-    .then(() => {
-      res.status(200).json({ message: "Sauce modifiée avec succès" });
+  Sauce.findOne({ _id: req.params.id })
+    .then((sauce) => {
+      if (sauce.userId !== req.auth.userId) {
+        res.status(401).json({ message: "Suppression non autoriser" });
+      } else {
+        Sauce.updateOne(
+          { _id: req.params.id },
+          { ...sauceBody, _id: req.params.id }
+        )
+          .then(() => {
+            res.status(200).json({ message: "Sauce modifiée avec succès" });
+          })
+          .catch((error) => res.status(400).json({ error: error }));
+      }
     })
     .catch((error) => res.status(400).json({ error: error }));
 };

@@ -31,6 +31,7 @@ exports.login = (req, res, next) => {
         res
           .status(401)
           .json({ message: "L'email ou le mot de pass ne sont pas correct" });
+          return
       }
       console.log(user);
       bcrypt
@@ -42,12 +43,13 @@ exports.login = (req, res, next) => {
               .json({
                 message: "L'email ou le mot de pass ne sont pas correct",
               });
+              return
           }
           res.status(200).json({
             userId: user._id,
             token: jwt.sign(
               { userId: user._id },
-              "s545712f7-7811-4699-9445-f2f97654e153",
+              process.env.DATABASE_NAME,
               { expiresIn: "24h" }
             ),
           });
