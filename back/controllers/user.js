@@ -2,6 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+//Fonction pour l'inscription d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
   console.log(req.body);
   bcrypt
@@ -23,6 +24,7 @@ exports.signup = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
+//Fonction utilisée pour gérer la connexion d'un utilisateur
 exports.login = (req, res, next) => {
   console.log(req.body);
   User.findOne({ email: req.body.email })
@@ -30,28 +32,24 @@ exports.login = (req, res, next) => {
       if (!user) {
         res
           .status(401)
-          .json({ message: "L'email ou le mot de pass ne sont pas correct" });
-          return
+          .json({ message: "L'email ou le mot de passe ne sont pas corrects" });
+        return;
       }
       console.log(user);
       bcrypt
         .compare(req.body.password, user.password)
         .then((validation) => {
           if (!validation) {
-            res
-              .status(401)
-              .json({
-                message: "L'email ou le mot de pass ne sont pas correct",
-              });
-              return
+            res.status(401).json({
+              message: "L'email ou le mot de passe ne sont pas corrects",
+            });
+            return;
           }
           res.status(200).json({
             userId: user._id,
-            token: jwt.sign(
-              { userId: user._id },
-              process.env.DATABASE_NAME,
-              { expiresIn: "24h" }
-            ),
+            token: jwt.sign({ userId: user._id }, process.env.DATABASE_NAME, {
+              expiresIn: "24h",
+            }),
           });
         })
         .catch((error) => res.status(400).json({ error }));

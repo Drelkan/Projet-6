@@ -1,11 +1,11 @@
 const Sauce = require("../models/sauce");
 const fs = require("fs");
 
+//Création d'une sauce
 exports.createSauce = (req, res, next) => {
   console.log(req.body);
   const sauceBody = JSON.parse(req.body.sauce);
   delete sauceBody._id;
-
   const sauce = new Sauce({
     ...sauceBody,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
@@ -24,6 +24,7 @@ exports.createSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error: error }));
 };
 
+//Récupération de toutes les sauces existantes dans la base de données
 exports.getAllSauces = (req, res, next) => {
   console.log(req.body);
   Sauce.find()
@@ -33,6 +34,7 @@ exports.getAllSauces = (req, res, next) => {
     .catch((error) => res.status(400).json({ error: error }));
 };
 
+//Récupération d'une sauce à partir de son Id
 exports.getOneSauce = (req, res, next) => {
   console.log(req.body);
   Sauce.findOne({ _id: req.params.id })
@@ -42,11 +44,8 @@ exports.getOneSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error: error }));
 };
 
-//test modifcation produit
+//Modification d'une sauce existante à condition que l'utilisateur authentifié corresponde a l'utilisateur ayant créé la sauce
 exports.modifySauce = (req, res, next) => {
-  // if (sauce.userId !== req.auth.userId) {
-  //   res.status(401).json({ message: "Suppression non autoriser" });
-  // }
   const sauceBody = req.file
     ? {
         ...JSON.parse(req.body.sauce),
@@ -58,7 +57,7 @@ exports.modifySauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       if (sauce.userId !== req.auth.userId) {
-        res.status(401).json({ message: "Suppression non autoriser" });
+        res.status(401).json({ message: "Suppression non autorisée" });
       } else {
         Sauce.updateOne(
           { _id: req.params.id },
@@ -72,14 +71,13 @@ exports.modifySauce = (req, res, next) => {
     })
     .catch((error) => res.status(400).json({ error: error }));
 };
-//
 
-//Test Suppression produit
+//Suppression d'une sauce à condition que l'utilisateur authentifié corresponde à l'utilisateur ayant créé la sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       if (sauce.userId !== req.auth.userId) {
-        res.status(401).json({ message: "Suppression non autoriser" });
+        res.status(401).json({ message: "Suppression non autorisée" });
       } else {
         const filename = sauce.imageUrl.split("/images/")[1];
         fs.unlink(`images/${filename}`, () => {
@@ -93,8 +91,8 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch((error) => res.status(400).json({ error: error }));
 };
-//
 
+//Fonction utilisée pour gérer les likes et dislikes d'une sauce
 exports.likeSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -118,7 +116,7 @@ exports.likeSauce = (req, res, next) => {
       sauce.dislikes = sauce.usersDisliked.length;
       sauce
         .save()
-        .then(() => res.status(200).json({ message: "mise à jour des likes" }))
+        .then(() => res.status(200).json({ message: "Mise à jour des likes" }))
         .catch((error) => res.status(400).json({ error: error }));
     })
     .catch((error) => res.status(400).json({ error: error }));

@@ -7,7 +7,8 @@ const path = require("path");
 const mongoSanitize = require("express-mongo-sanitize");
 const rateLimit = require("express-rate-limit");
 const xss = require("xss-clean");
-require('dotenv').config()
+const helmet = require("helmet");
+require("dotenv").config();
 
 const limiter = rateLimit({
   windowMs: 15,
@@ -16,12 +17,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Ajout d'helmet
-const helmet = require("helmet");
 app.use(helmet());
-
-// Ajout de dotenv
-// "mongodb+srv://dreinan7676:ut5bcIe7WPwlPyWf@cluster0.qln7rqc.mongodb.net/piiquante?retryWrites=true&w=majority",
 
 mongoose
   .connect(
@@ -50,7 +46,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use(mongoSanitize())
+app.use(mongoSanitize());
 
 app.use(limiter);
 
