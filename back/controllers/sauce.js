@@ -54,14 +54,14 @@ exports.modifySauce = (req, res, next) => {
         }`,
       }
     : { ...req.body };
-  Sauce.findOne({ _id: req.params.id })
+  Sauce.findOne({ _id: req.params.id})
     .then((sauce) => {
       if (sauce.userId !== req.auth.userId) {
         res.status(401).json({ message: "Suppression non autorisée" });
       } else {
         Sauce.updateOne(
-          { _id: req.params.id },
-          { ...sauceBody, _id: req.params.id }
+          { _id: req.params.id                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                },
+          { ...sauceBody, _id: req.params.id}
         )
           .then(() => {
             res.status(200).json({ message: "Sauce modifiée avec succès" });
