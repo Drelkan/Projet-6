@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 //Fonction pour l'inscription d'un nouvel utilisateur
 exports.signup = (req, res, next) => {
-  console.log(req.body);
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -26,7 +25,6 @@ exports.signup = (req, res, next) => {
 
 //Fonction utilisée pour gérer la connexion d'un utilisateur
 exports.login = (req, res, next) => {
-  console.log(req.body);
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (!user) {
@@ -35,7 +33,6 @@ exports.login = (req, res, next) => {
           .json({ message: "L'email ou le mot de passe ne sont pas corrects" });
         return;
       }
-      console.log(user);
       bcrypt
         .compare(req.body.password, user.password)
         .then((validation) => {

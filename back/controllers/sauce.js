@@ -3,7 +3,6 @@ const fs = require("fs");
 
 //Création d'une sauce
 exports.createSauce = (req, res, next) => {
-  console.log(req.body);
   const sauceBody = JSON.parse(req.body.sauce);
   delete sauceBody._id;
   const sauce = new Sauce({
@@ -26,7 +25,6 @@ exports.createSauce = (req, res, next) => {
 
 //Récupération de toutes les sauces existantes dans la base de données
 exports.getAllSauces = (req, res, next) => {
-  console.log(req.body);
   Sauce.find()
     .then((sauces) => {
       res.status(200).json(sauces);
@@ -36,7 +34,6 @@ exports.getAllSauces = (req, res, next) => {
 
 //Récupération d'une sauce à partir de son Id
 exports.getOneSauce = (req, res, next) => {
-  console.log(req.body);
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       res.status(200).json(sauce);
