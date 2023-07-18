@@ -16,16 +16,16 @@ npm install
 To start the application, follow the steps below:
 
 1. Navigate to the server directory:
-cd back
+`cd back`
 
-2. Start the server using the command:
-npm run nodemon
+3. Start the server using the command:
+`npm run nodemon`
 
-3. In another terminal, navigate to the client directory:
-cd front
+4. In another terminal, navigate to the client directory:
+`cd front`
 
-4. Launch the client application with the command:
-npm start
+5. Launch the client application with the command:
+`npm start`
 
 ## URL
 
