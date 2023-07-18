@@ -1,6 +1,6 @@
 # Piiquante
 
-This project is a web application for sharing spicy recipes.
+Piiquante is a web application for reviewing and rating hot sauces.
 
 ## Requirements
 
