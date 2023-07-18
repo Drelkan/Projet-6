@@ -35,9 +35,4 @@ http://localhost:4200/login
 
 Please ensure that port 4200 is not being used by any other application on your system.
 
-## About Piiquante
-
-Piiquante is a user-friendly application that allows users to share their spicy and flavorful recipes with others. Whether you are a seasoned chef or a home cook experimenting with spicy ingredients, Piiquante is the perfect platform for discovering and sharing spicy culinary delights.
-
-Enjoy your spicy cooking journey with Piiquante!
 
