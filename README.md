@@ -11,6 +11,8 @@ Make sure you have Node.js version 18.x or higher installed on your system. If y
 To install the necessary dependencies for the project, run the following command in the root directory of the project:
 `cd back`
 `npm install`
+`cd front`
+`npm install`
 
 ## Getting Started
 
