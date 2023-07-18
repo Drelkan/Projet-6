@@ -16,7 +16,7 @@ To install the necessary dependencies for the project, run the following command
 
 To start the application, follow the steps below:
 
-1. Navigate to the server directory:
+1. Check si vous ete dans le back, si vous n'ete pas dans le back Navigate to the server directory:
 `cd back`
 
 3. Start the server using the command:
